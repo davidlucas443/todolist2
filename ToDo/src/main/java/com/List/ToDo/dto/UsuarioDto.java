@@ -4,6 +4,9 @@ import com.List.ToDo.entities.Usuario;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
+
+
 
 public class UsuarioDto {
 
@@ -33,6 +36,7 @@ public class UsuarioDto {
         this.email = email;
         this.senha = senha;
     }
+
 
     public Long getId() {
         return Id;

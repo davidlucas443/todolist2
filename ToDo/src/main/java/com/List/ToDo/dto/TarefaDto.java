@@ -1,13 +1,22 @@
 package com.List.ToDo.dto;
 
 import com.List.ToDo.entities.Status;
+import com.List.ToDo.entities.Usuario;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class TarefaDto {
 
-    private Long Id;
+    private long idUser;
 
     @NotBlank
     private String nome;
@@ -18,60 +27,13 @@ public class TarefaDto {
     private LocalDate dtInicio;
     private LocalDate dtFim;
 
-
-    public TarefaDto(LocalDate dtFim, LocalDate dtInicio, Status status, String descricao, String nome) {
-        this.dtFim = dtFim;
-        this.dtInicio = dtInicio;
-        this.status = status;
-        this.descricao = descricao;
-        this.nome = nome;
-    }
-
-    public Long getId() {
-        return Id;
-    }
-
-    public void setId(Long id) {
-        Id = id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-
-    public LocalDate getDtInicio() {
-        return dtInicio;
-    }
-
-    public void setDtInicio(LocalDate dtInicio) {
-        this.dtInicio = dtInicio;
-    }
-
-    public LocalDate getDtFim() {
-        return dtFim;
-    }
-
-    public void setDtFim(LocalDate dtFim) {
-        this.dtFim = dtFim;
+    public TarefaDto(TarefaDto dto) {
+        this.idUser = dto.getIdUser();
+        this.nome = dto.getNome();
+        this.descricao = dto.getDescricao();
+        this.status = dto.getStatus();
+        this.dtInicio = dto.getDtInicio();
+        this.dtFim = dto.getDtFim();
     }
 }
+

@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("task")
+@RequestMapping("tarefa")
 public class TarefaController {
 
     private final TarefaService tarefaService;

@@ -8,6 +8,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.List;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 @Entity
 public class Usuario {
 
@@ -22,10 +28,6 @@ public class Usuario {
 
     private String senha;
 
-    public Usuario(){
-
-    }
-
     public Usuario(String nome, String email, String senha) {
         this.nome = nome;
         this.email = email;
@@ -38,35 +40,6 @@ public class Usuario {
         this.senha = dto.getSenha();
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
+    @OneToMany(mappedBy = "usuario")
+    private List<Tarefa> tarefas;
 }
