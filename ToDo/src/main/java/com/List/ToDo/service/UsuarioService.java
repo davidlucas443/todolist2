@@ -1,8 +1,10 @@
 package com.List.ToDo.service;
 
 import com.List.ToDo.dto.UsuarioDto;
+import com.List.ToDo.entities.Tarefa;
 import com.List.ToDo.entities.Usuario;
 import com.List.ToDo.repositories.UsuarioRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,14 +26,14 @@ public class UsuarioService {
         return dto;
     }
 
-    public List<UsuarioDto> listarUsuario(){
-        List<Usuario> usuarios = usuarioRepository.findAll();
-        List<UsuarioDto>listaDeUsuarios =
-                usuarios.stream().map(UsuarioDto::new).toList();
-        for(Usuario usuario : usuarios){
-            listaDeUsuarios.add(new UsuarioDto(usuario));
-        }
-        return listaDeUsuarios;
+    public List<Usuario> listarUsuario() {
+        return usuarioRepository.findAll();
+    }
+
+
+    public Usuario buscarUsuarioPorId(Long id) {
+        return usuarioRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Usuario não encontrado"));
     }
 
     public String deletar(Long id) {

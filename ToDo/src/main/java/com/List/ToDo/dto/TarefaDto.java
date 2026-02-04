@@ -11,9 +11,6 @@ import lombok.Setter;
 import java.time.LocalDate;
 
 @Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
 public class TarefaDto {
 
     private long idUser;
@@ -34,6 +31,14 @@ public class TarefaDto {
         this.status = dto.getStatus();
         this.dtInicio = dto.getDtInicio();
         this.dtFim = dto.getDtFim();
+    }
+
+    public TarefaDto(String nome, String descricao, Status status, LocalDate dtInicio, LocalDate dtFim) {
+        this.nome = nome;
+        this.descricao = descricao;
+        this.status = status;
+        this.dtInicio = dtInicio;
+        this.dtFim = dtFim;
     }
 }
 

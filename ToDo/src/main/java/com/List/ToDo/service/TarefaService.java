@@ -6,10 +6,12 @@ import com.List.ToDo.entities.Tarefa;
 import com.List.ToDo.entities.Usuario;
 import com.List.ToDo.repositories.TarefaRepository;
 import com.List.ToDo.repositories.UsuarioRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.task.ThreadPoolTaskExecutorBuilder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -50,8 +52,14 @@ public class TarefaService {
 
 
     public Tarefa buscarTarefaPorId(Long id) {
-        return tarefaRepository.findById(id).orElse(null);
+        return tarefaRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Tarefa não encontrado"));
     }
+
+    public List<Tarefa> listarTarefas() {
+        return tarefaRepository.findAll();
+    }
+
 
 
     public Tarefa atualizarTarefa(Long id, TarefaDto dto) {

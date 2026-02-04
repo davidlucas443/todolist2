@@ -1,6 +1,7 @@
 package com.List.ToDo.controller;
 
 import com.List.ToDo.dto.UsuarioDto;
+import com.List.ToDo.entities.Tarefa;
 import com.List.ToDo.entities.Usuario;
 import com.List.ToDo.repositories.UsuarioRepository;
 import com.List.ToDo.service.UsuarioService;
@@ -13,42 +14,41 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("user")
+@RequestMapping("usuario")
 public class UsuarioController {
 
     @Autowired
-    UsuarioRepository usuarioRepository;
+    private UsuarioService usuarioService;
 
-    private final UsuarioService usuarioService;
-
-    public UsuarioController(UsuarioService usuarioService) {
-        this.usuarioService = usuarioService;
-    }
-
-    @PostMapping("create")
+    @PostMapping
     public ResponseEntity<?> criarUsuario(@Valid @RequestBody UsuarioDto dto) {
-
         return ResponseEntity.ok(usuarioService.criarUsuario(dto));
-
     }
 
-    @GetMapping(value = "listar")
-    public List<UsuarioDto> listarUsuario() {
-        List<Usuario> usuarios = usuarioRepository.findAll();
-        List<UsuarioDto> listaDeUsuarios =
-                usuarios.stream().map(UsuarioDto::new).toList();
-        for (Usuario usuario : usuarios) {
-            listaDeUsuarios.add(new UsuarioDto(usuario));
+    @GetMapping("{id}")
+    public ResponseEntity<?> buscarPorId(@PathVariable Long id) {
+        Usuario usuario = usuarioService.buscarUsuarioPorId(id);
+        if (usuario == null) {
+            return ResponseEntity.status(404).body("Usuario não encontrada");
         }
-        return listaDeUsuarios;
+        return ResponseEntity.ok(usuario);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @GetMapping
+    public ResponseEntity<List<UsuarioDto>> listarTodos() {
+        List<UsuarioDto> usuarios = usuarioService.listarUsuario()
+                .stream()//o stream percorre a lista
+                .map(u -> new UsuarioDto(u.getNome(),u.getEmail(),u.getSenha()))// transforma o Pet no PetResponseDto
+                .toList(); //Gera uma nova lista
+        return ResponseEntity.ok(usuarios);
+    }
+
+    @DeleteMapping("{id}")
     public ResponseEntity<?> deletar(@PathVariable Long id) {
         return ResponseEntity.ok(usuarioService.deletar(id));
     }
 
-    @PutMapping("/atualizar/{id}")
+    @PutMapping("{id}")
     public ResponseEntity<?> atualizar(@PathVariable Long id) {
         return ResponseEntity.ok(usuarioService.atualizar(id));
     }
