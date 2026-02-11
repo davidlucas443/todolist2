@@ -1,6 +1,5 @@
 package com.List.ToDo.entities;
 
-import com.List.ToDo.dto.TarefaDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,8 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.*;
 
+@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
@@ -17,42 +16,22 @@ import java.util.*;
 public class Tarefa {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private String nome;
+
     private String descricao;
+
+    @Enumerated(EnumType.STRING)
     private Status status;
+
     private LocalDate dtInicio;
+
     private LocalDate dtFim;
 
-    @ManyToOne
-    @JoinColumn(name = "usuario_id")
+    // ✅ Relacionamento 1:N com Usuario
+    @ManyToOne(fetch = FetchType.LAZY)  // Lazy evita carregar usuário automaticamente
+    @JoinColumn(name = "usuario_id", nullable = false) // chave estrangeira obrigatória
     private Usuario usuario;
-
-    public Tarefa(long id, String nome, String descricao, Status status, LocalDate dtInicio, LocalDate dtFim, Usuario usuario) {
-        this.id = id;
-        this.nome = nome;
-        this.descricao = descricao;
-        this.status = status;
-        this.dtInicio = dtInicio;
-        this.dtFim = dtFim;
-        this.usuario = usuario;
-    }
-
-    public Tarefa(TarefaDto dto) {
-
-        this.nome = dto.getDescricao();
-        this.descricao = dto.getNome();
-        this.status = dto.getStatus();
-        this.dtInicio = dto.getDtInicio();
-        this.dtFim = dto.getDtFim();
-    }
-
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Optional<Usuario> user) {
-    }
 }

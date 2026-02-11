@@ -1,15 +1,13 @@
 package com.List.ToDo.service;
 
 import com.List.ToDo.dto.UsuarioDto;
-import com.List.ToDo.entities.Tarefa;
 import com.List.ToDo.entities.Usuario;
 import com.List.ToDo.repositories.UsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UsuarioService {
@@ -21,43 +19,52 @@ public class UsuarioService {
     }
 
     public UsuarioDto criarUsuario(UsuarioDto dto){
-        Usuario user = new Usuario(dto.getNome(), dto.getEmail(), dto.getSenha());
-        usuarioRepository.save(user);
-        return dto;
+
+        Usuario usuario = new Usuario(
+                dto.getNome(),
+                dto.getEmail(),
+                dto.getSenha()
+        );
+
+        usuario = usuarioRepository.save(usuario);
+
+        return new UsuarioDto(usuario);
     }
 
-    public List<Usuario> listarUsuario() {
-        return usuarioRepository.findAll();
+    public List<UsuarioDto> listarUsuario() {
+        return usuarioRepository.findAll()
+                .stream()
+                .map(UsuarioDto::new)
+                .collect(Collectors.toList());
     }
 
-
-    public Usuario buscarUsuarioPorId(Long id) {
-        return usuarioRepository.findById(id)
+    public UsuarioDto buscarUsuarioPorId(Long id) {
+        Usuario usuario = usuarioRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Usuario não encontrado"));
+
+        return new UsuarioDto(usuario);
     }
 
-    public String deletar(Long id) {
+    public void deletar(Long id) {
 
-        if (usuarioRepository.existsById(id)) {
-            usuarioRepository.deleteById(id);
-            return "Excluído com sucesso!";
-        } else {
-            return "Esse ID não existe";
+        if (!usuarioRepository.existsById(id)) {
+            throw new EntityNotFoundException("Usuario não encontrado");
         }
+
+        usuarioRepository.deleteById(id);
     }
 
-    public String atualizar(Long id) {
+    public UsuarioDto atualizar(Long id, UsuarioDto dto) {
 
-        Optional<Usuario> UsuarioExiste = usuarioRepository.findById(id);
-        if (UsuarioExiste.isPresent()) {
-            Usuario usuario = UsuarioExiste.get();
-            usuario.setNome(usuario.getNome());
-            usuario.setSenha(usuario.getSenha());
-            usuarioRepository.save(usuario);
-            UsuarioDto teste = new UsuarioDto(usuario);
-            return "Usuario atualizado";
-        } else {
-            return "Esse ID não existe";
-        }
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Usuario não encontrado"));
+
+        usuario.setNome(dto.getNome());
+        usuario.setEmail(dto.getEmail());
+        usuario.setSenha(dto.getSenha());
+
+        usuario = usuarioRepository.save(usuario);
+
+        return new UsuarioDto(usuario);
     }
 }

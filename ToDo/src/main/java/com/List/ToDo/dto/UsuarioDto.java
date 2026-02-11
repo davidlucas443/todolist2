@@ -4,10 +4,16 @@ import com.List.ToDo.entities.Usuario;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
 @Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class UsuarioDto {
 
     @NotBlank(message = "Digite um nome válido")
@@ -24,11 +30,4 @@ public class UsuarioDto {
         this.nome = user.getNome();
         this.email = user.getEmail();
     }
-
-    public UsuarioDto( String nome, String email, String senha) {
-        this.nome = nome;
-        this.email = email;
-        this.senha = senha;
-    }
-
 }
