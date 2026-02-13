@@ -19,13 +19,15 @@ public class TarefaController {
     }
 
     @PostMapping("/usuarios/{id}/tarefas")
-    public ResponseEntity<Tarefa> criarTarefa(
+    public ResponseEntity<TarefaDto> criarTarefa(
             @PathVariable Long id,
             @Valid @RequestBody TarefaDto dto) {
 
         Tarefa tarefa = tarefaService.criarTarefa(id, dto);
-        return ResponseEntity.status(201).body(tarefa);
+        TarefaDto tarefaResponse = new TarefaDto(tarefa);
+        return ResponseEntity.status(201).body(tarefaResponse);
     }
+
 
     @GetMapping("/usuarios/{id}/tarefas")
     public ResponseEntity<List<Tarefa>> listarTarefasPorUsuario(

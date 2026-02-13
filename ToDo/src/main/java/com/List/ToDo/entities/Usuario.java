@@ -1,6 +1,7 @@
 package com.List.ToDo.entities;
 
 import com.List.ToDo.dto.UsuarioDto;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,11 +11,11 @@ import lombok.Setter;
 import java.time.LocalDate;
 import java.util.List;
 
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 public class Usuario {
 
     @Id
@@ -41,5 +42,6 @@ public class Usuario {
     }
 
     @OneToMany(mappedBy = "usuario")
+    @JsonIgnore
     private List<Tarefa> tarefas;
 }
